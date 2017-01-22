@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Band.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LastFm.py" />
   </ItemGroup>
   <PropertyGroup>

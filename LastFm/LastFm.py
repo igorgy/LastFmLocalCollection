@@ -1,21 +1,10 @@
 import sys
 import pylast
-import persistent
 import ZODB, ZODB.FileStorage, transaction
 import BTrees.OOBTree
 from PyQt5.QtWidgets import QApplication, QWidget
-
-class Band(persistent.Persistent):
-
-    def __init__(self, name, tags):
-        self.name = name
-        self.tags = tags
-
-class Tag(persistent.Persistent):
-
-    def __init__(self, name, weight):
-        self.name = name
-        self.weight = weight
+from band import Band, Tag
+import os
 
 # You have to have your own unique two values for API_KEY and API_SECRET
 # Obtain yours from http://www.last.fm/api/account for Last.fm
@@ -35,7 +24,10 @@ tags = artist.get_top_tags()
 res1 = list(map(lambda val: Tag(val.item.name, val.weight), tags))
 band = Band(artist.name, res1)
 
-storage = ZODB.FileStorage.FileStorage('mydata.fs')
+if not os.path.exists('DB'):
+    os.makedirs('DB')
+
+storage = ZODB.FileStorage.FileStorage('DB\mydata.fs')
 db = ZODB.DB(storage)
 connection = db.open()
 root = connection.root()
@@ -43,8 +35,12 @@ root = connection.root()
 #val = root.bands.iteritems()
 #val = root.bands[band.name]
 #root[band.name] = band
-root.bands = BTrees.OOBTree.BTree()
-root.bands[band.name] = band
+
+if hasattr(root, 'bands') is False:
+    root.bands = BTrees.OOBTree.BTree()
+
+if root.bands.has_key(band.name) is 0:
+    root.bands[band.name] = band
 
 transaction.commit()
 
