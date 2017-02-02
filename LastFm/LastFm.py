@@ -1,23 +1,15 @@
 import sys
 import pylast
 from pylast import WSError
-import ZODB, ZODB.FileStorage, transaction
-import BTrees.OOBTree
 from PyQt5.QtWidgets import QApplication, QWidget
 from band import Band, Tag
 from ZODBRepository import ZODBRepository
 import os
 
-# You have to have your own unique two values for API_KEY and API_SECRET
-# Obtain yours from http://www.last.fm/api/account for Last.fm
 API_KEY = "0ee0a0129dde72e07c362c8d02e9a0f9" # this is a sample key
 API_SECRET = "b8c775442739058326fde7929fbcb3f2"
 
-# In order to perform a write operation you need to authenticate yourself
-#username = "_psycho_"
-#password_hash = pylast.md5("123456")
-
-network = pylast.LastFMNetwork(api_key = API_KEY, api_secret = API_SECRET)#, username = username, password_hash = password_hash)
+network = pylast.LastFMNetwork(api_key = API_KEY, api_secret = API_SECRET)
 
 if not os.path.exists('DB'):
     os.makedirs('DB')
