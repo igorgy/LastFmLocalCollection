@@ -26,6 +26,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LastFm.py" />
+    <Compile Include="Repository.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ZODBRepository.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
