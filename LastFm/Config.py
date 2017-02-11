@@ -1,0 +1,5 @@
+API_KEY = "0ee0a0129dde72e07c362c8d02e9a0f9"
+API_SECRET = "b8c775442739058326fde7929fbcb3f2"
+DB_PATH = 'DB'
+DB_FILE = 'DB\mydata.fs'
+MUSIC_PATH = '..\Music'

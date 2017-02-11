@@ -25,7 +25,16 @@
     <Compile Include="Band.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Config.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataProvider.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LastFm.py" />
+    <Compile Include="LastFmDataProvider.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Repository.py">
       <SubType>Code</SubType>
     </Compile>
