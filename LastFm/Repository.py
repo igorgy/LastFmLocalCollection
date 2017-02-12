@@ -8,3 +8,6 @@ class Repository( object ):
 
     def FindBand( self, name ):
         raise NotImplementedError( "Not Implemented" )
+
+    def IterBand( self ):
+        raise NotImplementedError( "Not Implemented" )

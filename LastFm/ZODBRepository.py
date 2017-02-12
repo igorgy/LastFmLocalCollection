@@ -28,6 +28,9 @@ class ZODBRepository( Repository ):
     def FindBand( self, name ):
         return None if self.root.bands.has_key(name) is 0 else self.root.bands[name]
 
+    def IterBand( self ):
+        return self.root.bands.iteritems()
+
     def __del__(self):
         self.connection.close()
         self.db.close()
