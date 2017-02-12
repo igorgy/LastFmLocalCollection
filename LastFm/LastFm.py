@@ -7,7 +7,9 @@ from ZODBRepository import ZODBRepository
 from LastFmDataProvider import LastFmDataProvider
 import os
 import Config
+import Helper.Folder
 
+'''
 dataProvider = LastFmDataProvider(Config.API_KEY, Config.API_SECRET)
 dataProvider.Connect()
 
@@ -16,7 +18,7 @@ if not os.path.exists(Config.DB_PATH):
 
 repo = ZODBRepository(Config.DB_FILE) 
 repo.Connect()
-'''
+
 for dir in os.walk(Config.MUSIC_PATH):
     for name in dir[1]:
         try:
@@ -46,7 +48,6 @@ class Example(QWidget):
         self.update = QPushButton("Update", self)
         self.update.clicked.connect(self.doAction)
 
-        self.timer = QBasicTimer()
         self.step = 0
 
         author = QLabel('Author')
@@ -76,27 +77,37 @@ class Example(QWidget):
         self.setWindowTitle('Review')    
         self.show()
 
-    def timerEvent(self, e):
-      
-        if self.step >= 100:
-            self.timer.stop()
-            self.update.setText('Update')
-            return
-            
-        self.step = self.step + 1
-        self.updateProgress.setValue(self.step)
-        self.updateProgress.setFormat('test' + str(self.step))
-
-        
 
     def doAction(self):
       
-        if self.timer.isActive():
-            self.timer.stop()
-            self.update.setText('Update')
-        else:
-            self.timer.start(100, self)
+            count = Helper.Folder.fcount(Config.MUSIC_PATH)
+            self.updateProgress.setMaximum(count)
+            dataProvider = LastFmDataProvider(Config.API_KEY, Config.API_SECRET)
+            dataProvider.Connect()
+
+            if not os.path.exists(Config.DB_PATH):
+                os.makedirs(Config.DB_PATH)
+
+            repo = ZODBRepository(Config.DB_FILE) 
+            repo.Connect()
+
+            for dir in os.walk(Config.MUSIC_PATH):
+                for name in dir[1]:
+                    try:
+
+                        self.step = self.step + 1
+                        self.updateProgress.setFormat(name)
+                        self.updateProgress.setValue(self.step)
+
+                        band = dataProvider.GetBand(name)
+
+                        if band is not None and repo.FindBand(band.name) is None:
+                            repo.AddBand(band)
+
+                    except:
+                        print('Unexpected error:', sys.exc_info()[0])
             self.update.setText('Stop')
+            self.updateProgress.reset()
         
         
 if __name__ == '__main__':

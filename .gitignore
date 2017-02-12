@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 /LastFm/DB
 /LastFm/__pycache__
+/LastFm/Helper/__pycache__
