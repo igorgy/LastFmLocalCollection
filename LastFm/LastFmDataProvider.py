@@ -1,7 +1,7 @@
 import pylast
 from pylast import WSError
 from DataProvider import DataProvider
-from band import Band, Tag
+from Band import Band, Tag
 
 class LastFmDataProvider( DataProvider ):
 

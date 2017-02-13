@@ -1,7 +1,7 @@
 from Repository import Repository
 import ZODB, ZODB.FileStorage, transaction
 import BTrees.OOBTree
-from band import Band, Tag
+from Band import Band, Tag
 
 class ZODBRepository( Repository ):
 
@@ -32,6 +32,7 @@ class ZODBRepository( Repository ):
         return self.root.bands.iteritems()
 
     def __del__(self):
+        transaction.commit()
         self.connection.close()
         self.db.close()
         self.storage.close()
