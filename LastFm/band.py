@@ -4,8 +4,8 @@ import itertools
 class Band(persistent.Persistent):
 
     def __init__(self, name, tags):
-        self.name = name
-        self.tags = tags
+        self.name = name 
+        self.tags = tags   
     
     def GetTopTags(self, count):
         return itertools.islice(self.tags, count)

@@ -2,6 +2,7 @@ from Repository import Repository
 import ZODB, ZODB.FileStorage, transaction
 import BTrees.OOBTree
 from Band import Band, Tag
+import os
 
 class ZODBRepository( Repository ):
 
@@ -13,6 +14,10 @@ class ZODBRepository( Repository ):
         self.root = None
 
     def Connect( self ):
+        dirname, __, file = self.dbPath.rpartition('\\')
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
         self.storage = ZODB.FileStorage.FileStorage(self.dbPath)
         self.db = ZODB.DB(self.storage)
         self.connection = self.db.open()
@@ -26,13 +31,14 @@ class ZODBRepository( Repository ):
         transaction.commit()
 
     def FindBand( self, name ):
-        return None if self.root.bands.has_key(name) is 0 else self.root.bands[name]
+        return self.root.bands.get(name, None)
+        #return None if name not in self.root.bands else self.root.bands[name]
 
     def IterBand( self ):
         return self.root.bands.iteritems()
 
     def __del__(self):
-        transaction.commit()
+        #transaction.commit()
         self.connection.close()
         self.db.close()
         self.storage.close()

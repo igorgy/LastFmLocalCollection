@@ -12,12 +12,6 @@ import Helper.Folder
 
 header = ['Band Name', 'Top Tags']
 
-if not os.path.exists(Config.DB_PATH):
-    os.makedirs(Config.DB_PATH)
-
-repo = ZODBRepository(Config.DB_FILE) 
-repo.Connect()
-
 class Example(QWidget):
     
     def __init__(self):
@@ -76,17 +70,18 @@ class Example(QWidget):
         self.updateProgress.setValue(self.step)
 
     def done_addinf_band(self):
+        repo = ZODBRepository(Config.DB_FILE) 
+        repo.Connect()
+
         self.updateProgress.reset() 
         self.update.setText('Update')
         it = repo.IterBand()
-        count = 0
 
-        for b in it:
-            count = count + 1
+        for count, b in enumerate(it):
             band = b[1]
-            self.table.setRowCount(count) 
-            self.table.setItem(count - 1, 0, QTableWidgetItem(band.name))
-            self.table.setItem(count - 1, 1, QTableWidgetItem(band.GetTopTagsString(10)))
+            self.table.setRowCount(count + 1) 
+            self.table.setItem(count, 0, QTableWidgetItem(band.name))
+            self.table.setItem(count, 1, QTableWidgetItem(band.GetTopTagsString(10)))
             self.genres |= set(map(lambda val: val.name, band.GetTopTags(10)))
 
         self.table.resizeColumnsToContents()
@@ -108,6 +103,9 @@ class YourThreadName(QThread):
         self.wait()
 
     def run(self):
+            repo = ZODBRepository(Config.DB_FILE) 
+            repo.Connect()
+
             dataProvider = LastFmDataProvider(Config.API_KEY, Config.API_SECRET)
             dataProvider.Connect()
 
