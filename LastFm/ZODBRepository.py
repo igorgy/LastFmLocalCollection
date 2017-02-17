@@ -35,7 +35,7 @@ class ZODBRepository( Repository ):
         #return None if name not in self.root.bands else self.root.bands[name]
 
     def IterBand( self ):
-        return self.root.bands.iteritems()
+        return map(lambda v: v[1], self.root.bands.iteritems())
 
     def __del__(self):
         #transaction.commit()

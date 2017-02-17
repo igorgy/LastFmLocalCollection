@@ -75,14 +75,13 @@ class Example(QWidget):
 
         self.updateProgress.reset() 
         self.update.setText('Update')
-        it = repo.IterBand()
 
-        for count, b in enumerate(it):
-            band = b[1]
+        for count, band in enumerate(repo.IterBand()):
             self.table.setRowCount(count + 1) 
             self.table.setItem(count, 0, QTableWidgetItem(band.name))
             self.table.setItem(count, 1, QTableWidgetItem(band.GetTopTagsString(10)))
             self.genres |= set(map(lambda val: val.name, band.GetTopTags(10)))
+
 
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()  
